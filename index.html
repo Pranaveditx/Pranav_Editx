@@ -121,20 +121,37 @@
   </footer>
 
   <script>
-    const API_KEY = 'AIzaSyCgAFVAt0qUzVk-NluWAEYgfr1C8egmA2w';
-    const CHANNEL_ID = 'UCW8ALZVa2A0BTFtEvOsgVKQ';
+    <script>
+  const API_KEY = 'AIzaSyCgAFVAt0qUzVk-NluWAEYgfr1C8egmA2w';
+  const CHANNEL_ID = 'UCW8ALZVa2A0BTFtEvOsgVKQ';
 
-    async function loadChannelData() {
+  async function loadChannelData() {
+    try {
       const url = `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${API_KEY}`;
       const res = await fetch(url);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
       const data = await res.json();
+
+      // Check if stats available
+      if (!data.items || data.items.length === 0) {
+        throw new Error("No data returned from YouTube API");
+      }
+
       const stats = data.items[0].statistics;
       document.getElementById('subs').innerText = `Subscribers: ${stats.subscriberCount}`;
       document.getElementById('views').innerText = `Total Views: ${stats.viewCount}`;
+      
       loadVideos();
+    } catch (error) {
+      alert("❌ YouTube API Error:\n" + error.message);
+      console.error("API Error:", error);
     }
+  }
 
-    async function loadVideos() {
+  async function loadVideos() {
+    try {
       const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet,id&order=date&maxResults=6`;
       const res = await fetch(url);
       const data = await res.json();
@@ -151,9 +168,13 @@
           container.appendChild(video);
         }
       });
+    } catch (error) {
+      alert("❌ Error loading videos:\n" + error.message);
+      console.error("Video Error:", error);
     }
+  }
 
-    loadChannelData();
-  </script>
+  loadChannelData();
+</script>
 </body>
   </html>
