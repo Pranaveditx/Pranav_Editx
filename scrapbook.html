@@ -1,0 +1,151 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scrapbook for Bestie 💗</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #ffe6f0, #fddde6);
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      padding: 60px 20px 30px;
+      font-family: 'Great Vibes', cursive;
+      font-size: 3em;
+      color: #e91e63;
+      position: relative;
+    }
+    .message {
+      text-align: center;
+      font-size: 1.4em;
+      margin: 0 20px;
+      color: #880e4f;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px;
+    }
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .card p {
+      padding: 15px;
+      text-align: center;
+      color: #d81b60;
+    }
+    audio {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 1em;
+      color: #ad1457;
+    }
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Scrapbook for Shreyaa 💗
+  </header>
+  <div class="message">
+    "I am really lucky that you are my best friend 💗"
+  </div>  <div class="gallery">
+    <div class="card">
+      <img src="https://source.unsplash.com/300x200/?friends,happy" alt="Memory 1">
+      <p>Best day ever with you 💕</p>
+    </div>
+    <div class="card">
+      <img src="https://source.unsplash.com/300x200/?girl,smile" alt="Memory 2">
+      <p>Your smile lights up my world 🌸</p>
+    </div>
+    <div class="card">
+      <img src="https://source.unsplash.com/300x200/?stars,sky" alt="Memory 3">
+      <p>Under the same sky, always besties ✨</p>
+    </div>
+  </div>  <audio controls autoplay loop>
+    <source src="https://aac.saavncdn.com/743/1664e65c9c95c31a87ae88bd2e409b55_96.mp4" type="audio/mp4">
+    Your browser does not support the audio element.
+  </audio>  <div class="footer">
+    Made with 💗 by Pranav for Bestie Shreyaa
+  </div><canvas class="hearts"></canvas>
+
+  <script>
+    // Floating hearts animation
+    const canvas = document.querySelector(".hearts");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let hearts = [];
+    function Heart() {
+      this.x = Math.random() * canvas.width;
+      this.y = canvas.height + Math.random() * 100;
+      this.size = Math.random() * 20 + 10;
+      this.speedY = Math.random() * 2 + 1;
+      this.alpha = Math.random() * 0.5 + 0.5;
+    }
+    Heart.prototype.draw = function() {
+      ctx.globalAlpha = this.alpha;
+      ctx.fillStyle = "#e91e63";
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+      ctx.bezierCurveTo(this.x - 10, this.y - 10, this.x - 10, this.y - 30, this.x, this.y - 20);
+      ctx.bezierCurveTo(this.x + 10, this.y - 30, this.x + 10, this.y - 10, this.x, this.y);
+      ctx.fill();
+    };
+    Heart.prototype.update = function() {
+      this.y -= this.speedY;
+      if (this.y < -30) {
+        this.y = canvas.height + Math.random() * 100;
+        this.x = Math.random() * canvas.width;
+      }
+    };
+    function initHearts() {
+      for (let i = 0; i < 50; i++) {
+        hearts.push(new Heart());
+      }
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hearts.forEach(h => {
+        h.update();
+        h.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+    initHearts();
+    animate();
+  </script></body>
+</html>
